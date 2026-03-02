@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	authhttp "github.com/theerSs/vtt/internal/auth/http"
+	"github.com/theerSs/vtt/internal/auth"
 	"github.com/theerSs/vtt/internal/platform/env"
 	"github.com/theerSs/vtt/internal/platform/router"
 )
@@ -16,7 +16,7 @@ func main() {
 		log.Fatalf("env load failed: %v", err)
 	}
 	
-	authHandler := authhttp.NewHandler()
+	authHandler := auth.NewHandler()
 
 	r := router.InitRouter(router.Deps{
 		APIs: map[string]router.ApiHandler{

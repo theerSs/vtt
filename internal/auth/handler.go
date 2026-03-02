@@ -1,4 +1,4 @@
-package authhttp
+package auth
 
 import (
 	"net/http"
@@ -6,8 +6,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-type Handler struct {
-}
+type Handler struct {}
 
 func NewHandler() *Handler {
 	return &Handler{}
