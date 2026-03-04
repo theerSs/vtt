@@ -1,33 +1,25 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"log"
-	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
+	"github.com/theerSs/vtt/internal/platform/app"
 	"github.com/theerSs/vtt/internal/platform/env"
-	"github.com/theerSs/vtt/internal/platform/router"
-	"github.com/theerSs/vtt/internal/rooms"
 )
 
 func main() {
-	err := env.Load()
-	if err != nil {
+	if err := env.Load(); err != nil {
 		log.Fatalf("env load failed: %v", err)
 	}
 
-	roomsModule := rooms.NewModule()
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
 
-	r := router.InitRouter(router.Deps{
-		Modules: map[string]router.AppModule{
-			"rooms": roomsModule,
-		},
-	})
-
-	addr := fmt.Sprintf(":%s", env.APIPort.GetValue())
-	log.Printf("Server started on %s", addr)
-
-	if err := http.ListenAndServe(addr, r); err != nil {
-		log.Fatalf("server failed: %v", err)
+	if err := app.Run(ctx); err != nil {
+		log.Fatal(err)
 	}
 }

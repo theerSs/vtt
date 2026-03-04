@@ -18,6 +18,8 @@ const (
 	PostgresUser     EnvKey = "POSTGRES_USER"
 	PostgresPassword EnvKey = "POSTGRES_PASSWORD"
 	PostgresPort     EnvKey = "POSTGRES_PORT"
+	PostgresHost     EnvKey = "POSTGRES_HOST"
+	PostgresSSLMode  EnvKey = "POSTGRES_SSL_MODE"
 )
 
 func Load() error {
