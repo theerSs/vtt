@@ -1,33 +1,25 @@
 package router
 
 import (
-	"time"
-
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 )
 
-type ApiHandler interface {
-	Register(chi.Router)
+type AppModule interface {
+	RegisterRoutes(chi.Router)
 }
 
 type Deps struct {
-	APIs map[string]ApiHandler
+	Modules map[string]AppModule
 }
 
-func InitRouter(d Deps) *chi.Mux{
+func InitRouter(d Deps) *chi.Mux {
 	r := chi.NewRouter()
+	setupMiddlewares(r)
 
-	r.Use(middleware.RequestID)
-  r.Use(middleware.RealIP)
-  r.Use(middleware.Logger)
-  r.Use(middleware.Recoverer)
-	r.Use(middleware.Timeout(60 * time.Second))
-	
 	r.Route("/api", func(r chi.Router) {
-		for path, h := range d.APIs {
+		for path, m := range d.Modules {
 			r.Route("/"+path, func(r chi.Router) {
-				h.Register(r)
+				m.RegisterRoutes(r)
 			})
 		}
 	})

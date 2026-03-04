@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/theerSs/vtt/internal/auth"
 	"github.com/theerSs/vtt/internal/platform/env"
 	"github.com/theerSs/vtt/internal/platform/router"
+	"github.com/theerSs/vtt/internal/rooms"
 )
 
 func main() {
@@ -15,12 +15,12 @@ func main() {
 	if err != nil {
 		log.Fatalf("env load failed: %v", err)
 	}
-	
-	authHandler := auth.NewHandler()
+
+	roomsModule := rooms.NewModule()
 
 	r := router.InitRouter(router.Deps{
-		APIs: map[string]router.ApiHandler{
-			"auth": authHandler,
+		Modules: map[string]router.AppModule{
+			"rooms": roomsModule,
 		},
 	})
 
