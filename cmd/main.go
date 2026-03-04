@@ -20,6 +20,7 @@ func main() {
 	defer stop()
 
 	if err := app.Run(ctx); err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		os.Exit(1)
 	}
 }

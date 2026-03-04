@@ -27,7 +27,7 @@ func Serve(ctx context.Context, srv *http.Server) error {
 
 	select {
 	case <-ctx.Done():
-		shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		shutdownCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 		defer cancel()
 		return srv.Shutdown(shutdownCtx)
 
